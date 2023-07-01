@@ -8,6 +8,8 @@ import {
 import { DayNumber } from "./DayNumber";
 import React from "react";
 import { DayHeader } from "./DayHeader";
+import { Event } from "./Event";
+import { cl } from "../../helpers/cl";
 
 export const Day = ({ date }: { date: Date }) => {
   const currentMonth = isThisMonth(date);
@@ -19,6 +21,11 @@ export const Day = ({ date }: { date: Date }) => {
       } ${weekend ? "bg-neutral-100 @dark:bg-zinc-800" : "bg-white"}`}
     >
       <DayHeader date={date} />
+      <Event
+        title="Cricket with my best buddy Steven"
+        color="bg-red-200"
+        time="20:00"
+      />
     </span>
   );
 };
