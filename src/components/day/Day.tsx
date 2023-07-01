@@ -1,11 +1,4 @@
-import {
-  format,
-  isFirstDayOfMonth,
-  isThisMonth,
-  isToday,
-  isWeekend,
-} from "date-fns";
-import { DayNumber } from "./DayNumber";
+import { isThisMonth, isWeekend } from "date-fns";
 import React from "react";
 import { DayHeader } from "./DayHeader";
 import { Event } from "./Event";
@@ -16,9 +9,10 @@ export const Day = ({ date }: { date: Date }) => {
   const weekend = isWeekend(date);
   return (
     <span
-      className={`flex flex-col @dark:bg-neutral-800 ${
-        currentMonth ? "" : ""
-      } ${weekend ? "bg-neutral-100 @dark:bg-zinc-800" : "bg-white"}`}
+      className={cl("flex flex-col", {
+        "bg-neutral-100 @dark:bg-zinc-800": weekend,
+        "bg-white @dark:bg-zinc-900": !weekend,
+      })}
     >
       <DayHeader date={date} />
       <Event
