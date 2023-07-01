@@ -42,14 +42,20 @@ export const App = () => {
     const weeksToPrepend = 4;
     console.log(`Prepending ${weeksToPrepend} more weeks`);
     setFirstWeekToShow((firstWeekToShow) => firstWeekToShow - weeksToPrepend);
-  }, [setFirstWeekToShow]);
+  }, []);
+
+  const endReached = useCallback(() => {
+    const weeksToAppend = 4;
+    setLastWeekToShow((lastWeekToShow) => lastWeekToShow + weeksToAppend);
+  }, []);
+
   console.log(`Showing total amount of weeks: ${totalWeeksToShow}`);
   return (
     <>
       <button onClick={goToToday}>Today</button>
       <Virtuoso
         ref={ref}
-        className="h-full absolute"
+        className="h-full"
         firstItemIndex={firstWeekToShow}
         initialTopMostItemIndex={firstWeekToShow}
         itemContent={(index) => <Week weekIndexSinceEpoch={index} />}
@@ -59,6 +65,7 @@ export const App = () => {
         }}
         totalCount={totalWeeksToShow}
         startReached={startReached}
+        endReached={endReached}
       ></Virtuoso>
     </>
   );
