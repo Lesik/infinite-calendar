@@ -1,9 +1,20 @@
-import { addDays, format, isWeekend, startOfWeek } from "date-fns";
+import {
+  eachDayOfInterval,
+  endOfWeek,
+  format,
+  isWeekend,
+  startOfWeek,
+} from "date-fns";
 import { cl } from "./helpers/cl";
 
 export const CalendarHeader = () => {
   const today = new Date();
   const weekStart = startOfWeek(today);
+  const weekEnd = endOfWeek(today);
+  const week = eachDayOfInterval({
+    start: weekStart,
+    end: weekEnd,
+  });
 
   return (
     <div
@@ -12,8 +23,7 @@ export const CalendarHeader = () => {
         "@dark:(border-neutral-700)"
       )}
     >
-      {[...Array(7).keys()].map((a, index) => {
-        const day = addDays(weekStart, index);
+      {week.map((day) => {
         const weekend = isWeekend(day);
         return (
           <span

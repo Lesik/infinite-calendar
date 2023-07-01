@@ -1,4 +1,4 @@
-import { addDays, addWeeks, startOfWeek } from "date-fns";
+import { addWeeks, eachDayOfInterval, endOfWeek, startOfWeek } from "date-fns";
 import { epoch } from "../index";
 import { Day } from "./day/Day";
 import { cl } from "../helpers/cl";
@@ -10,6 +10,11 @@ export const Week = ({
 }) => {
   const date = addWeeks(epoch, weekIndexSinceEpoch);
   const weekStart = startOfWeek(date);
+  const weekEnd = endOfWeek(date);
+  const week = eachDayOfInterval({
+    start: weekStart,
+    end: weekEnd,
+  });
 
   return (
     <div
@@ -18,10 +23,9 @@ export const Week = ({
         "@dark:(bg-neutral-700 border-neutral-700)"
       )}
     >
-      {[...Array(7).keys()].map((a, index) => {
-        const day = addDays(weekStart, index);
-        return <Day key={day.toISOString()} date={day} />;
-      })}
+      {week.map((day) => (
+        <Day key={day.toISOString()} date={day} />
+      ))}
     </div>
   );
 };
