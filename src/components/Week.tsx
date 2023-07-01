@@ -1,14 +1,6 @@
-import {
-  addDays,
-  addWeeks,
-  format,
-  isFirstDayOfMonth,
-  isThisMonth,
-  isToday,
-  isWeekend,
-  startOfWeek,
-} from "date-fns";
+import { addDays, addWeeks, startOfWeek } from "date-fns";
 import { epoch } from "../index";
+import { Day } from "./day/Day";
 
 export const Week = ({
   weekIndexSinceEpoch,
@@ -25,40 +17,5 @@ export const Week = ({
         return <Day key={day.toISOString()} date={day} />;
       })}
     </div>
-  );
-};
-
-const DayNumber = ({
-  number,
-  highlight,
-}: {
-  number: string;
-  highlight: boolean;
-}) => (
-  <div
-    className={`inline-flex justify-right justify-center rounded-full h-[3cap] w-[3cap] leading-[3cap] font-bold ${
-      highlight ? `bg-red text-white` : ``
-    }`}
-  >
-    {number}
-  </div>
-);
-
-export const Day = ({ date }: { date: Date }) => {
-  const today = isToday(date);
-  const firstOfMonth = isFirstDayOfMonth(date);
-  const currentMonth = isThisMonth(date);
-  const weekend = isWeekend(date);
-  return (
-    <span
-      className={`flex flex-col bg-white @dark:bg-neutral-800 ${
-        currentMonth ? "" : ""
-      } ${weekend ? "@dark:bg-zinc-800" : ""}`}
-    >
-      <div>
-        <DayNumber number={format(date, "d")} highlight={today} />
-        {firstOfMonth && format(date, "LLL")}
-      </div>
-    </span>
   );
 };
