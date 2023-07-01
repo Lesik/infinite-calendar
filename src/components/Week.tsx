@@ -11,7 +11,7 @@ export const Week = ({
   const weekStart = startOfWeek(date);
 
   return (
-    <div className="h-34 grid grid-cols-7 gap-x-[2px] border-b-solid border-b-2 border-neutral-200 bg-neutral-200 snap-x @dark:bg-neutral-700">
+    <div className="h-34 grid grid-cols-7 gap-x-[2px] border-b-solid border-b-2 border-neutral-200 bg-neutral-200 @dark:bg-neutral-700">
       {[...Array(7).keys()].map((a, index) => {
         const day = addDays(weekStart, index);
         return <Day key={day.toISOString()} date={day} />;

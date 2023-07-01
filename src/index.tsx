@@ -1,9 +1,15 @@
 import { createRoot } from "react-dom/client";
 import { Components, Virtuoso, VirtuosoHandle } from "react-virtuoso";
-import { differenceInCalendarWeeks, fromUnixTime } from "date-fns";
+import {
+  differenceInCalendarWeeks,
+  fromUnixTime,
+  setDefaultOptions,
+} from "date-fns";
 import { useCallback, useMemo, useState, forwardRef, useRef } from "react";
 import "virtual:uno.css";
 import { Week } from "./components/Week";
+import { enGB } from "date-fns/locale";
+import { CalendarHeader } from "./CalendarHeader";
 
 const currentDate = Date.now();
 
@@ -12,22 +18,19 @@ const AMOUNT_WEEKS_ON_SCREEN = 4;
 export const epoch = fromUnixTime(0);
 
 const Item: Components["Item"] = forwardRef((props, ref) => (
-  <div className="snap-center" {...props} />
+  <div className="snap-start" {...props} />
 ));
 
 const List: Components["List"] = forwardRef(({ style, children }, ref) => {
   return (
-    <div
-      className="snap-both snap-mandatory overflow-y-auto"
-      style={style}
-      ref={ref}
-    >
+    <div style={style} ref={ref}>
       {children}
     </div>
   );
 });
 
 export const App = () => {
+  setDefaultOptions({ locale: enGB });
   const weeksSinceEpoch = differenceInCalendarWeeks(currentDate, epoch);
   console.log({ weeksSinceEpoch });
   const ref = useRef<VirtuosoHandle>(null);
@@ -52,15 +55,16 @@ export const App = () => {
   console.log(`Showing total amount of weeks: ${totalWeeksToShow}`);
   return (
     <>
-      <button onClick={goToToday}>Today</button>
+      <CalendarHeader />
+      {/*<button onClick={goToToday}>Today</button>*/}
       <Virtuoso
         ref={ref}
-        className="h-full"
+        className="snap-y"
         firstItemIndex={firstWeekToShow}
         initialTopMostItemIndex={firstWeekToShow}
         itemContent={(index) => <Week weekIndexSinceEpoch={index} />}
         components={{
-          List,
+          // List,
           Item,
         }}
         totalCount={totalWeeksToShow}
