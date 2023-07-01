@@ -10,7 +10,7 @@ export const Event = ({
   color: string;
 }) => {
   return (
-    <div className="flex flex-row items-center gap-2 p-2">
+    <div className="flex flex-row items-center gap-2 px-2">
       <div className={cl("h-2 w-2 rounded shrink-0", color)}></div>
       <span className="overflow-hidden whitespace-nowrap text-ellipsis">
         {title}
