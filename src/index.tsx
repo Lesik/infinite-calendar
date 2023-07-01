@@ -1,44 +1,37 @@
 import { createRoot } from "react-dom/client";
-import { Virtuoso } from "react-virtuoso";
-import {
-  addDays,
-  addWeeks,
-  differenceInCalendarWeeks,
-  endOfWeek,
-  fromUnixTime,
-  getWeek,
-  startOfWeek,
-} from "date-fns";
-import { useCallback, useMemo, useState } from "react";
+import { Components, Virtuoso, VirtuosoHandle } from "react-virtuoso";
+import { differenceInCalendarWeeks, fromUnixTime } from "date-fns";
+import { useCallback, useMemo, useState, forwardRef, useRef } from "react";
 import "virtual:uno.css";
+import { Week } from "./components/Week";
 
 const currentDate = Date.now();
 
 const AMOUNT_WEEKS_ON_SCREEN = 4;
 
-const Week = ({ weekIndexSinceEpoch }: { weekIndexSinceEpoch: number }) => {
-  const date = addWeeks(epoch, weekIndexSinceEpoch);
+export const epoch = fromUnixTime(0);
+
+const Item: Components["Item"] = forwardRef((props, ref) => (
+  <div className="snap-center" {...props} />
+));
+
+const List: Components["List"] = forwardRef(({ style, children }, ref) => {
   return (
-    <div className="min-h-20">
-      <div className="color-red-300">
-        (This is week #{weekIndexSinceEpoch}, date {date.toDateString()})
-      </div>
-      <div className="grid grid-cols-7">
-        {[...Array(7).keys()].map((a, index) => (
-          <span key={index}>
-            {addDays(startOfWeek(date), index).toDateString()}
-          </span>
-        ))}
-      </div>
+    <div
+      className="snap-both snap-mandatory overflow-y-auto"
+      style={style}
+      ref={ref}
+    >
+      {children}
     </div>
   );
-};
-
-const epoch = fromUnixTime(0);
+});
 
 export const App = () => {
   const weeksSinceEpoch = differenceInCalendarWeeks(currentDate, epoch);
   console.log({ weeksSinceEpoch });
+  const ref = useRef<VirtuosoHandle>(null);
+  const goToToday = () => ref.current?.scrollToIndex(0);
   const [firstWeekToShow, setFirstWeekToShow] = useState(weeksSinceEpoch - 5);
   const [lastWeekToShow, setLastWeekToShow] = useState(weeksSinceEpoch + 5);
   const totalWeeksToShow = useMemo(
@@ -52,17 +45,22 @@ export const App = () => {
   }, [setFirstWeekToShow]);
   console.log(`Showing total amount of weeks: ${totalWeeksToShow}`);
   return (
-    <div>
-      <h1>Virtuso</h1>
+    <>
+      <button onClick={goToToday}>Today</button>
       <Virtuoso
-        style={{ height: 400 }}
+        ref={ref}
+        className="h-full absolute"
         firstItemIndex={firstWeekToShow}
         initialTopMostItemIndex={firstWeekToShow}
         itemContent={(index) => <Week weekIndexSinceEpoch={index} />}
+        components={{
+          List,
+          Item,
+        }}
         totalCount={totalWeeksToShow}
         startReached={startReached}
       ></Virtuoso>
-    </div>
+    </>
   );
 };
 
