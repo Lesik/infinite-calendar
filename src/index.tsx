@@ -5,7 +5,7 @@ import {
   fromUnixTime,
   setDefaultOptions,
 } from "date-fns";
-import { useCallback, useMemo, useState, forwardRef, useRef } from "react";
+import { forwardRef, useCallback, useMemo, useRef, useState } from "react";
 import "virtual:uno.css";
 import { Week } from "./components/Week";
 import { enGB } from "date-fns/locale";
@@ -32,7 +32,6 @@ const List: Components["List"] = forwardRef(({ style, children }, ref) => {
 export const App = () => {
   setDefaultOptions({ locale: enGB });
   const weeksSinceEpoch = differenceInCalendarWeeks(currentDate, epoch);
-  console.log({ weeksSinceEpoch });
   const ref = useRef<VirtuosoHandle>(null);
   const goToToday = () => ref.current?.scrollToIndex(0);
   const [firstWeekToShow, setFirstWeekToShow] = useState(weeksSinceEpoch - 5);
@@ -43,7 +42,6 @@ export const App = () => {
   );
   const startReached = useCallback(() => {
     const weeksToPrepend = 4;
-    console.log(`Prepending ${weeksToPrepend} more weeks`);
     setFirstWeekToShow((firstWeekToShow) => firstWeekToShow - weeksToPrepend);
   }, []);
 
@@ -52,7 +50,6 @@ export const App = () => {
     setLastWeekToShow((lastWeekToShow) => lastWeekToShow + weeksToAppend);
   }, []);
 
-  console.log(`Showing total amount of weeks: ${totalWeeksToShow}`);
   return (
     <>
       <CalendarHeader />
@@ -61,7 +58,7 @@ export const App = () => {
         ref={ref}
         className="snap-y"
         firstItemIndex={firstWeekToShow}
-        initialTopMostItemIndex={firstWeekToShow}
+        initialTopMostItemIndex={totalWeeksToShow / 2}
         itemContent={(index) => <Week weekIndexSinceEpoch={index} />}
         components={{
           // List,

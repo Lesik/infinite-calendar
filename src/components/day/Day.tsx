@@ -1,9 +1,10 @@
-import { isThisMonth, isWeekend, isWithinInterval } from "date-fns";
+import { isThisMonth, isToday, isWeekend, isWithinInterval } from "date-fns";
 import React from "react";
 import { DayHeader } from "./DayHeader";
 import { Event } from "./Event";
 import { cl } from "../../helpers/cl";
 import { AllDayEvent } from "./AllDayEvent";
+import { EventPopup } from "./EventPopup";
 
 export const Day = ({ date }: { date: Date }) => {
   const currentMonth = isThisMonth(date);
@@ -28,11 +29,15 @@ export const Day = ({ date }: { date: Date }) => {
           color="bg-cyan-800"
         />
       )}
-      <Event
-        title="Cricket with my best buddy Steven"
-        color="bg-red-200"
-        time="20:00"
-      />
+      {isToday(date) && (
+        <EventPopup>
+          <Event
+            title="Cricket with my best buddy Steven"
+            color="bg-red-200"
+            time="20:00"
+          />
+        </EventPopup>
+      )}
     </span>
   );
 };
