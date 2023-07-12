@@ -10,7 +10,7 @@ import {
 
 export const EditDialog = () => {
   return (
-    <div className="rounded-md bg-neutral-200 p-4 flex flex-col gap-2">
+    <div className="rounded-md bg-neutral-200 @dark:bg-neutral-800 p-4 flex flex-col gap-2">
       <TextField className="flex flex-col">
         <Label className="text-sm">Event name</Label>
         <Input
