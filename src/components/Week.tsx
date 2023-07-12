@@ -1,6 +1,6 @@
 import { addWeeks, eachDayOfInterval, endOfWeek, startOfWeek } from "date-fns";
 import { epoch } from "../index";
-import { Day } from "./day/Day";
+import { Day } from "./Day/Day";
 import { cl } from "../helpers/cl";
 
 export const Week = ({
