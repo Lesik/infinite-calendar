@@ -2,7 +2,8 @@
   "name": "infinite-calendar",
   "version": "1.0.0",
   "scripts": {
-    "start": "vite"
+    "start": "vite",
+    "build": "vite build"
   },
   "dependencies": {
     "date-fns": "^2.30.0",
